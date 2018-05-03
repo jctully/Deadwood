@@ -4,7 +4,6 @@ public class Card {
   String title;
   String sceneNum;
   Role[] onCardRoles;
-  //Player[] players;
   int budget;
 
   //card constructor

@@ -1,12 +1,16 @@
 
 public class Room {
-
+	
+  String title;
   Card card;
   Room[] adjacentRooms;
   //Player[] playersInRoom;
   int shots;
   Role[] offCardRoles;
   Boolean wrapped;
+
+  public Room() {
+  }
 
   public void addPlayer(Player player) {
   }
@@ -18,6 +22,10 @@ public class Room {
   }
 
   public Boolean isWrapped() {
+  }
+
+  public String getTitle() {
+
   }
 
   public int getShots() {
