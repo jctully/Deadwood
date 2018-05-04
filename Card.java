@@ -12,22 +12,25 @@ public class Card {
   }
 
   public Boolean hasOnCard() {
-    
+    return false;
   }
 
   public String getTitle() {
-
+    return null;
   }
 
   public String getSceneNum() {
+    return null;
 
   }
 
   public int getBudget() {
+    return 0;
 
   }
 
   public Role[] getRoles() {
+    return null;
 
   }
 

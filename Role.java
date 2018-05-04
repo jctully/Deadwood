@@ -12,19 +12,19 @@ public class Role {
   }
 
   public Boolean isOnCard() {
-
+    return false;
   }
 
   public int getRank() {
-
+    return 0;
   }
 
   public String getTitle() {
-
+    return null;
   }
 
   public String getLine() {
-
+    return null;
   }
 
 }
