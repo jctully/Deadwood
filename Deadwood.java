@@ -4,7 +4,7 @@ public class Deadwood {
   Player[] players;
 
   public Player getCurrPlayer() {
-
+    return null;
   }
 
   public void nextTurn() {
