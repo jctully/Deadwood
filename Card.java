@@ -8,11 +8,20 @@ public class Card {
 
   //card constructor
   public Card(String title, String sceneNum, Role[] roles, int budget) {
-
+    this.title = title;
+    this.sceneNum = sceneNum;
+    this.roles = roles;
+    this.budget = budget;
   }
 
   public Boolean hasOnCard() {
-    return false;
+    Boolean onCard = false;
+    for (Role x : this.onCardRoles) {
+      if (x.occupied()) {
+        onCard = true;
+      }
+    }
+    return onCard;
   }
 
   public String getTitle() {
