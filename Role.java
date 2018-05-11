@@ -14,6 +14,10 @@ public class Role {
     this.onCard = onCard;
   }
 
+	public Boolean isOccupied() {
+	return this.occupied;
+}
+
   public Boolean isOnCard() {
     return this.onCard;
   }
