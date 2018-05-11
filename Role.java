@@ -7,24 +7,27 @@ public class Role {
   Boolean occupied;
   int rank;
 
-  public Role(String title, String line, int rank) {
-
+  public Role(String title, String line, int rank, Boolean onCard) {
+    this.title = title;
+    this.line = line;
+    this.rank = rank;
+    this.onCard = onCard;
   }
 
   public Boolean isOnCard() {
-    return false;
+    return this.onCard;
   }
 
   public int getRank() {
-    return 0;
+    return this.rank;
   }
 
   public String getTitle() {
-    return null;
+    return this.title;
   }
 
   public String getLine() {
-    return null;
+    return this.line;
   }
 
 }
