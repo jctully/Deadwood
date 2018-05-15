@@ -2,12 +2,12 @@
 public class Card {
 
   String title;
-  String sceneNum;
+  int sceneNum;
   Role[] onCardRoles;
   int budget;
 
   //card constructor
-  public Card(String title, String sceneNum, Role[] roles, int budget) {
+  public Card(String title, int sceneNum, Role[] roles, int budget) {
     this.title=title;
     this.sceneNum=sceneNum;
     this.onCardRoles=roles;
@@ -29,7 +29,7 @@ public class Card {
     return this.title;
   }
 
-  public String getSceneNum() {
+  public int getSceneNum() {
     return this.sceneNum;
   }
 

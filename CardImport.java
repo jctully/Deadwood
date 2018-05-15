@@ -30,10 +30,10 @@ public class CardImport {
 
   }
 
-  public static void readCardData(Document d) {
+  public static Card[] readCardData(Document d) {
     Element root = d.getDocumentElement();
     NodeList cardList = root.getElementsByTagName("card");
-
+    Card[] cards = new Card[cardList.getLength()];
     for (int i=0; i<cardList.getLength(); i++) {
       Node card = cardList.item(i);
       String cardName = card.getAttributes().getNamedItem("name").getNodeValue();
@@ -42,9 +42,25 @@ public class CardImport {
       Element sceneE = (Element)s.getElementsByTagName("scene").item(0);
       int sceneNumber = Integer.parseInt(sceneE.getAttributes().getNamedItem("number").getNodeValue());
       NodeList parts = s.getElementsByTagName("part");
-      System.out.println(cardName + " " + sceneNumber + " $" + cardBudget + "\n");
+      Role[] roles = new Role[3];
+      System.out.println(cardName + " " + sceneNumber + " $" + cardBudget);
+      for (int j=0; j<parts.getLength(); j++) {
+        Element partE = (Element)parts.item(j);
+        String partName = partE.getAttribute("name");
+        int partLevel = Integer.parseInt(partE.getAttribute("level"));
+        String partLine = partE.getElementsByTagName("line").item(0).getTextContent();
+        System.out.println(partName + " " + partLevel + " \"" + partLine);
+        Role r = new Role(partName, partLine, partLevel, true);
+        roles[j] = r;
+        System.out.println(roles[j].getTitle());
+      }
+      Card c = new Card(cardName, sceneNumber, roles, cardBudget);
+      cards[i] = c;
+      System.out.println(c.getTitle() + "\n");
+
     }
 
+    return cards;
   }
 
   public static void main (String[] args) {
@@ -54,7 +70,7 @@ public class CardImport {
 
     } catch (Exception ex){
     }
-    readCardData(doc);
+    Card[] cards = readCardData(doc);
   }
 
 }
