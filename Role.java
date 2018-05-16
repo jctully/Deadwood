@@ -34,4 +34,8 @@ public class Role {
     return this.line;
   }
 
+  public void restRole() {
+    this.occupied = false;
+  }
+
 }
