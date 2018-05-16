@@ -34,7 +34,7 @@ public class Role {
     return this.line;
   }
 
-  public void restRole() {
+  public void resetRole() {
     this.occupied = false;
   }
 

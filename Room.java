@@ -1,24 +1,24 @@
 public class Room {
   String title;
   Card card;
-  Room[] adjacentRooms;
+  String[] adjacentRooms;
   //Player[] playersInRoom;
   int shots;
 	int initialShots;
   Role[] offCardRoles;
   Boolean wrapped;
 
-  public Room(String title, Room[] adjacentRooms, int shots, Role[] offCardRoles) {
+  public Room(String title, String[] adjacentRooms, int shots, Role[] offCardRoles) {
 		this.title = title;
 		this.adjacentRooms = adjacentRooms;
 		this.shots = shots;
-		this.initialShotshots=shots;
+		this.initialShots = shots;
 		this.offCardRoles = offCardRoles;
   }
 /*
   public void addPlayer(Player player) {
   }*/
-  public Room[] getAdjacentRooms() {
+  public String[] getAdjacentRooms() {
    return this.adjacentRooms;
   }
   public void setCard(Card card) {
@@ -41,9 +41,9 @@ public class Room {
   }
   public void completeShot() {
 		this.shots--;
-		if (shots == 0) {
-			Deadwood.wrapScene();
-		}
+		//if (shots == 0) {
+			//Deadwood.wrapScene();
+		//}
   }
 	public void resetRoom(){
 		this.card=null;
