@@ -3,7 +3,7 @@ import java.io.*;
 
 class Player
 {
-   String playerID;
+   int playerID;
    int fame;
    int money;
    int rank;
@@ -11,6 +11,17 @@ class Player
    int rehearseBonus;
    Room playerLocation;
    Role playerRole;
+
+   public Player(int id, Room playerLocation) {
+     this.playerID = id;
+     this.fame = 0;
+     this.money = 0;
+     this.rank = 1;
+     this.workStatus = false;
+     this.rehearseBonus = 0;
+     this.playerLocation = playerLocation;
+     this.playerRole = null;
+   }
 
    public String getPlayerID(){
      return this.playerID;
@@ -58,7 +69,7 @@ class Player
    }
 
    private void act(){
-    
+
    }
 
    public void takeRole(Role role){
