@@ -5,7 +5,7 @@ public class Deadwood {
   Player[] players;
   Player currentPlayer;
   int currentPlayerNum;
-  Board board = new Board();
+  Board board;
 
   public Player getCurrPlayer() {
     return this.currentPlayer;
@@ -19,7 +19,10 @@ public class Deadwood {
   public void wrap(Room room) {
     room.wrap();
     board.wrapRoom();
-    if (room.card.hasOnCard()) {//give rewards
+    if (room.getCard().hasOnCard()) {//need to give rewards
+      int budget = room.getCard().getBudget();
+      RNG dice = new RNG();
+      int[] rolls = dice.getDiceRolls(budget);
       for (Player player : this.players) {
         if (player.playerLocation.getTitle().equals(room.getTitle())) {
           //check if on or off card, give bonus accordingly
@@ -42,11 +45,12 @@ public class Deadwood {
 
   public void main(String[] args) {
     this.currentDay = 0;
-    this.players = new Player[3];
+    int numPlayers = Integer.parseInt(args[0]);
+    this.players = new Player[numPlayers];
     this.currentPlayer = null;
     this.currentPlayerNum = 0;
-    CardImport cards = new CardImport();
-    Card[] allCards = cards.getCards();
+    this.board = new Board();
+    board.initRooms();
 
     Scanner scn = new Scanner(System.in);
     //while (day != 4) {
