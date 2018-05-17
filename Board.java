@@ -7,17 +7,17 @@ class Board
 
    public Board() {
      BoardImport board = new BoardImport();
-     this.roomList = board.getRooms()
+     this.roomList = board.getRooms();
      this.roomsLeft = 10;
    }
 
    public Room findRoom(String name) {
      Room find = null;
      for (Room r : this.roomList) {
-       if (r.getName().equals(name))
+       if (r.getTitle().equals(name))
        find = r;
      }
-     return r;
+     return find;
    }
 
    public void clearBoard(){
@@ -26,14 +26,15 @@ class Board
    }
 
    public void initRooms(){
-     CardImport card = new CardImport();
-     Card[] cards = card.getCards();
+     CardImport cardImport = new CardImport();
+     Card[] cards = cardImport.getCards();
      for (Room r : this.roomList) {
-       //rng 0..cards.length()
-       Card card = cards[rng];
-       while (card.isOnBoard()) {
-         //rng
-         card = cards[rng];
+       RNG rng = new RNG();
+       int cardIndex = rng.getRandomNum(0,cards.length-1);
+       Card card = cards[cardIndex];
+       while (card.isOnBoard()) {//card has been dealt on board
+         cardIndex = rng.getRandomNum(0,cards.length-1);
+         card = cards[cardIndex];
        }
        r.setCard(card);
        card.putOnBoard();
