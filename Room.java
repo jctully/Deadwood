@@ -49,11 +49,9 @@ public class Room {
    return this.card;
   }
 
-  public void completeShot() {
-		this.shots--;
-		if (shots == 0) {
-			Deadwood.wrapScene();
-		}
+  public int completeShot() {
+    this.shots--;
+		return this.shots;
   }
 
 	public void resetRoom(){
@@ -61,7 +59,7 @@ public class Room {
 		this.shots=this.initialShots;
 		this.wrapped=false;
 		for(Role x: this.offCardRoles)
-				x.resetRole();		
+				x.resetRole();
 	}
 
 }
