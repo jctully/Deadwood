@@ -5,6 +5,7 @@ public class Card {
   int sceneNum;
   Role[] onCardRoles;
   int budget;
+  Boolean isOnBoard;
 
   //card constructor
   public Card(String title, int sceneNum, Role[] roles, int budget) {
@@ -12,6 +13,7 @@ public class Card {
     this.sceneNum=sceneNum;
     this.onCardRoles=roles;
     this.budget=budget;
+    this.isInRoom = false;
   }
 
   public Boolean hasOnCard() {
@@ -39,6 +41,14 @@ public class Card {
 
   public Role[] getRoles() {
     return this.onCardRoles;
+  }
+
+  public void putOnBoard() {
+    this.isOnBoard = true;
+  }
+
+  public Boolean isOnBoard() {
+    return this.isOnBoard;
   }
 
 

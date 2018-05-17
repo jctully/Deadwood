@@ -2,7 +2,6 @@ public class Room {
   String title;
   Card card;
   String[] adjacentRooms;
-  //Player[] playersInRoom;
   int shots;
 	int initialShots;
   Role[] offCardRoles;
@@ -21,38 +20,48 @@ public class Room {
   public String[] getAdjacentRooms() {
    return this.adjacentRooms;
   }
+
   public void setCard(Card card) {
 		this.card = card;
   }
+
   public Boolean isWrapped() {
    return this.wrapped;
   }
+
+  public void wrap() {
+    this.wrapped = true;
+  }
+
   public String getTitle() {
    return this.title;
   }
+
   public int getShots() {
    return this.shots;
   }
+
   public Role[] getRoles(){
    return this.offCardRoles;
   }
+
   public Card getCard() {
    return this.card;
   }
+
   public void completeShot() {
 		this.shots--;
-		//if (shots == 0) {
-			//Deadwood.wrapScene();
-		//}
+		if (shots == 0) {
+			Deadwood.wrapScene();
+		}
   }
+
 	public void resetRoom(){
 		this.card=null;
 		this.shots=this.initialShots;
 		this.wrapped=false;
-		for(Role x: this.offCardRoles){
-				x.resetRole();
-
-		}
+		for(Role x: this.offCardRoles)
+				x.resetRole();		
 	}
 
 }
