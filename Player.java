@@ -23,7 +23,7 @@ class Player
      this.playerRole = null;
    }
 
-   public String getPlayerID(){
+   public int getPlayerID(){
      return this.playerID;
    }
 

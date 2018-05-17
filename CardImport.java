@@ -12,7 +12,7 @@ import java.io.File;
 public class CardImport {
 
   // returns a Document object after loading the book.xml file.
-  public static Document getDocFromFile(String filename) throws ParserConfigurationException {
+  public Document getDocFromFile(String filename) throws ParserConfigurationException {
     {
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
       DocumentBuilder db= dbf.newDocumentBuilder();
@@ -30,7 +30,7 @@ public class CardImport {
 
   }
 
-  public static Card[] readCardData(Document d) {
+  public Card[] readCardData(Document d) {
     Element root = d.getDocumentElement();
     NodeList cardList = root.getElementsByTagName("card");
     Card[] cards = new Card[cardList.getLength()];
@@ -43,27 +43,27 @@ public class CardImport {
       int sceneNumber = Integer.parseInt(sceneE.getAttributes().getNamedItem("number").getNodeValue());
       NodeList parts = s.getElementsByTagName("part");
       Role[] roles = new Role[3];
-      System.out.println(cardName + " " + sceneNumber + " $" + cardBudget);
+      //System.out.println(cardName + " " + sceneNumber + " $" + cardBudget);
       for (int j=0; j<parts.getLength(); j++) {
         Element partE = (Element)parts.item(j);
         String partName = partE.getAttribute("name");
         int partLevel = Integer.parseInt(partE.getAttribute("level"));
         String partLine = partE.getElementsByTagName("line").item(0).getTextContent();
-        System.out.println(partName + " " + partLevel + " \"" + partLine);
+        //System.out.println(partName + " " + partLevel + " \"" + partLine);
         Role r = new Role(partName, partLine, partLevel, true);
         roles[j] = r;
-        System.out.println(roles[j].getTitle());
+        //System.out.println(roles[j].getTitle());
       }
       Card c = new Card(cardName, sceneNumber, roles, cardBudget);
       cards[i] = c;
-      System.out.println(c.getTitle() + "\n");
+      //System.out.println(c.getTitle() + "\n");
 
     }
 
     return cards;
   }
 
-  public static void main (String[] args) {
+  public Card[] getCards() {
     Document doc = null;
     try{
       doc = getDocFromFile("cards.xml");
@@ -71,6 +71,7 @@ public class CardImport {
     } catch (Exception ex){
     }
     Card[] cards = readCardData(doc);
+    return cards;
   }
 
 }

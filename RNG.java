@@ -14,5 +14,5 @@ public class RNG {
     }
     Arrays.sort(rolls, 0, budget);
     return rolls;
-
+  }
 }

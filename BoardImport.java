@@ -2,6 +2,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
+import java.util.*;
+import java.io.*;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -33,7 +36,11 @@ public class BoardImport {
   public Room[] readBoardData(Document d) {
     Element root = d.getDocumentElement();
     NodeList setList = root.getElementsByTagName("set");
-    Room[] rooms = new Room[10];
+    NodeList trailerList = root.getElementsByTagName("trailer");
+    NodeList officeList = root.getElementsByTagName("office");
+
+
+    Room[] rooms = new Room[12];
     int takeNum = 0;
     for (int i=0; i<setList.getLength(); i++) {
 
@@ -119,12 +126,43 @@ public class BoardImport {
         Room r = new Room(setName, neighborNames, takeNum, roles);
       //System.out.println(setName + " " + neighborNames[0]+ " " + takeNum);
         rooms[i] = r;
-
     }
+    //add trailer object
+    Node trailerN = trailerList.item(0);
+    Element trailerNeighbors = (Element)trailerN;
+    Element trailerE = (Element)trailerNeighbors.getElementsByTagName("neighbors").item(0);
+
+    NodeList neighborList = trailerE.getElementsByTagName("neighbor");
+    String[] neighborNames = new String[neighborList.getLength()];
+    for (int j=0; j<neighborList.getLength(); j++) {
+      Node neighbor = neighborList.item(j);
+      String neighborName = neighbor.getAttributes().getNamedItem("name").getNodeValue();
+      neighborNames[j] = neighborName;
+    }
+    Room trailerRoom = new Room("trailer", neighborNames, 0, null);
+    rooms[10] = trailerRoom;
+
+    //add office object
+    Node officeN = officeList.item(0);
+    Element officeNeighbors = (Element)officeN;
+    Element officeE = (Element)officeNeighbors.getElementsByTagName("neighbors").item(0);
+
+    NodeList officeNeighborList = officeE.getElementsByTagName("neighbor");
+    String[] officeNeighborNames = new String[officeNeighborList.getLength()];
+    for (int j=0; j<officeNeighborList.getLength(); j++) {
+      Node officeNeighbor = officeNeighborList.item(j);
+      String officeNeighborName = officeNeighbor.getAttributes().getNamedItem("name").getNodeValue();
+      officeNeighborNames[j] = officeNeighborName;
+    }
+    Room officeRoom = new Room("office", officeNeighborNames, 0, null);
+    rooms[11] = officeRoom;
+    /*for (Room r : rooms) {
+      System.out.println(r.getTitle() + " " + Arrays.toString(r.getAdjacentRooms()) + " " + r.getShots());
+    }*/
     return rooms;
   }
 
-  public Room[] getRooms(String[] args) {
+  public Room[] getRooms() {
     Document doc = null;
     try{
       doc = getDocFromFile("board.xml");

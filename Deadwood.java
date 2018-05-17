@@ -1,29 +1,30 @@
 import java.util.*;
 
 public class Deadwood {
-  int currentDay;
+  /* int currentDay;
   Player[] players;
   Player currentPlayer;
   int currentPlayerNum;
   Board board;
+  */
 
-  public Player getCurrPlayer() {
-    return this.currentPlayer;
+  public Player getCurrPlayer(Player[] players, int currentPlayerNum) {
+    return players[currentPlayerNum];
   }
 
-  public void nextTurn() {
-    this.currentPlayerNum = (this.currentPlayerNum+1)%4;
-    this.currentPlayer = this.players[this.currentPlayerNum];
+  public Player nextTurn(Player[] players, int currentPlayerNum) {
+    currentPlayerNum = (currentPlayerNum+1)%players.length;
+    return players[currentPlayerNum];
   }
 
-  public void wrap(Room room) {
+  public void wrap(Room room, Board board, Player[] players) {
     room.wrap();
     board.wrapRoom();
     if (room.getCard().hasOnCard()) {//need to give rewards
       int budget = room.getCard().getBudget();
       RNG dice = new RNG();
       int[] rolls = dice.getDiceRolls(budget);
-      for (Player player : this.players) {
+      for (Player player : players) {
         if (player.playerLocation.getTitle().equals(room.getTitle())) {
           //check if on or off card, give bonus accordingly
         }
@@ -31,34 +32,38 @@ public class Deadwood {
     }
   }
 
-  public void endDay() {
+  public void endDay(Player[] players) {
     //Board.clearBoard();
-    for (Player p : this.players) {
+    for (Player p : players) {
       // p.move(trailer);
 
     }
   }
 
   public void endGame() {
-
+    //calc score
   }
 
-  public void main(String[] args) {
-    this.currentDay = 0;
+  public static void main(String[] args) {
+    int currentDay = 0;
     int numPlayers = Integer.parseInt(args[0]);
-    this.players = new Player[numPlayers];
-    this.currentPlayer = null;
-    this.currentPlayerNum = 0;
-    this.board = new Board();
+    Player[] players = new Player[numPlayers];
+    Player currentPlayer = null;
+    int currentPlayerNum = 0;
+    Board board = new Board();
     board.initRooms();
+    for (int i =0; i<numPlayers; i++) {
+      players[i] = new Player(i, board.findRoom("trailer"));
+    }
 
     Scanner scn = new Scanner(System.in);
+
     //while (day != 4) {
-    System.out.println("Day " + this.currentDay);
+    System.out.print("Day " + currentDay + ", ");
 
-    System.out.println("Player" + this.currentPlayerNum);
+    System.out.println("Player " + currentPlayerNum);
+    System.out.println("Options:");
     System.out.println("1 - ");
-
 
 
 
