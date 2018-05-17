@@ -13,7 +13,7 @@ public class Card {
     this.sceneNum=sceneNum;
     this.onCardRoles=roles;
     this.budget=budget;
-    this.isInRoom = false;
+    this.isOnBoard = false;
   }
 
   public Boolean hasOnCard() {
