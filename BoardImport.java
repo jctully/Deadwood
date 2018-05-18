@@ -96,11 +96,11 @@ public class BoardImport {
       //parts
 
       Element setParts = (Element)set;
-      Element partE = (Element)setParts.getElementsByTagName("part").item(0);
+      Element partE = (Element)setParts.getElementsByTagName("parts").item(0);
 
 
       //part
-      NodeList partList = root.getElementsByTagName("part");
+      NodeList partList = partE.getElementsByTagName("part");
       Role[] roles = new Role[partList.getLength()];
 
       for (int b=0; b<partList.getLength(); b++) {
@@ -124,7 +124,7 @@ public class BoardImport {
       }
 
         Room r = new Room(setName, neighborNames, takeNum, roles);
-      //System.out.println(setName + " " + neighborNames[0]+ " " + takeNum);
+      //System.out.println(setName + " " + roles[0].getTitle() + "\n");
         rooms[i] = r;
     }
     //add trailer object
