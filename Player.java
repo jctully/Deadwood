@@ -65,7 +65,7 @@ class Player
      this.workStatus = w;
    }
 
-   private void rehearse(){
+   public void rehearse(){
      this.rehearseBonus+=1;
    }
 

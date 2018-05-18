@@ -1,5 +1,5 @@
 import java.util.*;
-
+import java.io.*;
 public class Deadwood {
   /* int currentDay;
   Player[] players;
@@ -12,7 +12,7 @@ public class Deadwood {
     Player current = players[currentPlayerNum];
     current.resetMovedThisTurn();
     currentPlayerNum = (currentPlayerNum+1)%players.length;
-    System.out.println("Player " + (currentPlayerNum+1) + "'s turn\n");
+    System.out.println("Player " + (currentPlayerNum+1) + "'s turn");
     return currentPlayerNum;
   }
 
@@ -54,15 +54,15 @@ public class Deadwood {
       players[i] = new Player(i, board.findRoom("trailer"));
     }
 
-    Scanner scn = new Scanner(System.in);
 
-    System.out.print("Day " + currentDay + ", ");
-    System.out.println("Player " + (currentPlayerNum+1) + "'s turn");
+
+    System.out.print("\nDay " + (currentDay+1));
+    System.out.println("\nPlayer " + (currentPlayerNum+1) + "'s turn");
 
     while (currentDay != 4) {
     Player currentPlayer = players[currentPlayerNum];
-
-    System.out.println("Options:");
+    Scanner scn = new Scanner(System.in);
+    System.out.println("\nOptions:");
     System.out.println("1 - Current Player Info");
     System.out.println("2 - Show all player locations");
     System.out.println("3 - Move");
@@ -73,9 +73,19 @@ public class Deadwood {
     System.out.println("8 - End Turn");
     System.out.println("\nInput the number pertaining to the action you would like to perform.");
 
-    int i = scn.nextInt();
+    int i = 0;
+    try{
+      i = scn.nextInt();
+    }
+    catch(InputMismatchException exception){
+      System.out.println("You did not enter a number");
+
+    }
+
+
+
     if (i == 1) {//player info
-      System.out.println("ID: " + (currentPlayer.getPlayerID()+1));
+      System.out.println("\nID: " + (currentPlayer.getPlayerID()+1));
       System.out.println("Rank: " + currentPlayer.getRank());
       System.out.println("Money: " + currentPlayer.getMoney());
       System.out.println("Fame Points: " + currentPlayer.getFame());
@@ -93,7 +103,7 @@ public class Deadwood {
 
     if (i == 2) {//display locations
       for (Player player : players) {
-        System.out.println("Player " + player.getPlayerID()+1 + " in " +player.getPlayerLoc().getTitle());
+        System.out.println("Player " + (player.getPlayerID()+1) + " in " +player.getPlayerLoc().getTitle());
       }
     }else if (i == 3) {//move
       if (!currentPlayer.hasMovedThisTurn()) {
@@ -102,10 +112,19 @@ public class Deadwood {
         for (int a=1; a<=options.length; a++) {
           System.out.println(a+ " - " + options[a-1]);
         }
-        int opt = scn.nextInt();
+
+        int opt = 0;
+        try{
+          opt = scn.nextInt();
+        }
+        catch(InputMismatchException exception){
+          System.out.println("You did not enter a number, returning to menu");
+          break;
+        }
+
         currentPlayer.move(board.findRoom(options[opt-1]));
-        System.out.println("Moved to " + currentPlayer.getPlayerLoc().getTitle());
-        System.out.println("----------");
+        System.out.println("\nMoved to " + currentPlayer.getPlayerLoc().getTitle());
+        System.out.println("----------\n");
       }
       else{//already moved
         System.out.println("You have already moved this turn\n");
@@ -145,7 +164,16 @@ public class Deadwood {
             System.out.println((a+1) +" - "+ allRoles[a].getTitle()+ ", Rank = "
               + allRoles[a].getRank() + ", " + onCardStr);
           }
-          int opt = scn.nextInt();
+
+          int opt;
+          try{
+            opt = scn.nextInt();
+          }
+          catch(InputMismatchException exception){
+            System.out.println("You did not enter a number, returning to menu");
+            break;
+          }
+
           if (opt == 0) {
             break;
           }
@@ -164,10 +192,54 @@ public class Deadwood {
       //System.out.println("The off card roles available in this room are:" + player.getPlayerLoc.getRoles());
     }else if (i == 5) {
 
-    }else if (i == 6) {
+    }else if (i == 6) {//rehearse
+      if (currentPlayer.getWorkStatus()){
+        currentPlayer.rehearse();
+        System.out.println("You have rehearsed your role. When you act "+currentPlayer.getRehearseBonus()+" will be added to your score.");
+        currentPlayerNum = nextTurn(players, currentPlayerNum);
+      }else{
+        System.out.println("You must be working on a role to rehearse.");
+      }
+    }else if (i == 7) {//upgrade
+      if(currentPlayer.getPlayerLoc().getTitle() == "office"){
 
-    }else if (i == 7) {
+        int playerRank = currentPlayer.getRank();
+        int playerCash = currentPlayer.getMoney();
+        int playerFame = currentPlayer.getFame();
 
+        System.out.println("\nUpgrade Options:");
+
+        System.out.println("Rank 2 -  4$ or  5 fame");
+        System.out.println("Rank 3 - 10$ or 10 fame");
+        System.out.println("Rank 4 - 18$ or 15 fame");
+        System.out.println("Rank 5 - 28$ or 20 fame");
+        System.out.println("Rank 6 - 40$ or 25 fame");
+
+        System.out.println("\nInput the number of the rank you would like to recieve.");
+
+        int opt = 0;
+        try{
+          opt = scn.nextInt();
+        }
+        catch(InputMismatchException exception){
+          System.out.println("You did not enter a number, returning to menu");
+        }
+
+        if (opt ==2) {
+
+        }else if (opt ==3) {
+
+        }else if (opt ==4) {
+
+        }else if (opt ==5) {
+
+        }else if (opt ==6) {
+
+        }
+
+      }else{
+        System.out.println("You must be in the office to be able to upgrade");
+      }
     }else if (i == 8) {
       currentPlayerNum = nextTurn(players, currentPlayerNum);
     }
