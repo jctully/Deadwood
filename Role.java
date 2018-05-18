@@ -11,12 +11,17 @@ public class Role {
     this.title = title;
     this.line = line;
     this.rank = rank;
+    this.occupied = false;
     this.onCard = onCard;
   }
 
 	public Boolean isOccupied() {
-	return this.occupied;
-}
+	   return this.occupied;
+  }
+
+  public void makeOccupied() {
+    this.occupied = true;
+  }
 
   public Boolean isOnCard() {
     return this.onCard;
