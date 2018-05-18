@@ -2,6 +2,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
+import java.util.*;
+import java.io.*;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -42,7 +45,7 @@ public class CardImport {
       Element sceneE = (Element)s.getElementsByTagName("scene").item(0);
       int sceneNumber = Integer.parseInt(sceneE.getAttributes().getNamedItem("number").getNodeValue());
       NodeList parts = s.getElementsByTagName("part");
-      Role[] roles = new Role[3];
+      Role[] roles = new Role[parts.getLength()];
       //System.out.println(cardName + " " + sceneNumber + " $" + cardBudget);
       for (int j=0; j<parts.getLength(); j++) {
         Element partE = (Element)parts.item(j);
@@ -56,7 +59,7 @@ public class CardImport {
       }
       Card c = new Card(cardName, sceneNumber, roles, cardBudget);
       cards[i] = c;
-      //System.out.println(c.getTitle() + "\n");
+      //System.out.println(c.getTitle() + Arrays.toString(roles) + "\n");
 
     }
 
