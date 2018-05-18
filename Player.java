@@ -11,6 +11,7 @@ class Player
    int rehearseBonus;
    Room playerLocation;
    Role playerRole;
+   Boolean movedThisTurn;
 
    public Player(int id, Room playerLocation) {
      this.playerID = id;
@@ -21,6 +22,7 @@ class Player
      this.rehearseBonus = 0;
      this.playerLocation = playerLocation;
      this.playerRole = null;
+     this.movedThisTurn = false;
    }
 
    public int getPlayerID(){
@@ -55,7 +57,7 @@ class Player
      this.rank = r;
    }
 
-   public Boolean getWorkSatus(){
+   public Boolean getWorkStatus(){
      return this.workStatus;
    }
 
@@ -63,21 +65,55 @@ class Player
      this.workStatus = w;
    }
 
-
    private void rehearse(){
      this.rehearseBonus+=1;
    }
 
+   public int getRehearseBonus() {
+     return this.rehearseBonus;
+   }
+
    public void move(Room loc){
      this.playerLocation = loc;
+     this.movedThisTurn = true;
    }
 
    private void act(){
 
    }
 
+   public Role getRole() {
+     return this.playerRole;
+   }
+
    public void takeRole(Role role){
      this.playerRole = role;
+     this.workStatus = true;
+     role.makeOccupied();
+     System.out.println("Role " + role.getTitle() + " taken.\n");
+   }
+
+   public Boolean checkRole(Role role) {
+     Boolean ret = false;
+
+     if(role.isOccupied())
+       System.out.println("Role is occupied. Please try another.");
+
+     else if (role.getRank() > this.rank)
+       System.out.println("Rank not high enough for this role. Please try another.");
+
+     else
+       ret = true;
+
+     return ret;
+   }
+
+   public Boolean hasMovedThisTurn() {
+     return this.movedThisTurn;
+   }
+
+   public void resetMovedThisTurn() {
+     this.movedThisTurn = false;
    }
 
 
