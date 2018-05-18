@@ -9,10 +9,12 @@ public class Room {
 
   public Room(String title, String[] adjacentRooms, int shots, Role[] offCardRoles) {
 		this.title = title;
+    this.card = null;
 		this.adjacentRooms = adjacentRooms;
 		this.shots = shots;
 		this.initialShots = shots;
 		this.offCardRoles = offCardRoles;
+    this.wrapped = false;
   }
 /*
   public void addPlayer(Player player) {
