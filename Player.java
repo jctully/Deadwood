@@ -27,6 +27,10 @@ class Player
      return this.playerID;
    }
 
+   public Room getPlayerLoc(){
+     return this.playerLocation;
+   }
+
    public int getFame(){
      return this.fame;
    }
