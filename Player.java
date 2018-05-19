@@ -37,16 +37,16 @@ class Player
      return this.fame;
    }
 
-   public void setFame(int f){
-     this.fame = f;
+   public void giveFame(int f){
+     this.fame += f;
    }
 
    public int getMoney(){
      return this.money;
    }
 
-   public void setMoney(int m){
-     this.money = m;
+   public void giveMoney(int m){
+     this.money += m;
    }
 
    public int getRank(){
@@ -76,10 +76,6 @@ class Player
    public void move(Room loc){
      this.playerLocation = loc;
      this.movedThisTurn = true;
-   }
-
-   private void act(){
-
    }
 
    public Role getRole() {
@@ -115,6 +111,104 @@ class Player
    public void resetMovedThisTurn() {
      this.movedThisTurn = false;
    }
+
+   public Boolean upgrade(int opt) {
+     Boolean ret = false;
+     System.out.println("Select how you would like to pay, or 0 to end turn:");
+     Scanner scn = new Scanner(System.in);
+     int i;
+     if (opt == 0) {
+       ret = true;
+     } else if (opt ==2) {
+       System.out.println("1 - $4");
+       System.out.println("2 - 5 Fame");
+       i = scn.nextInt();
+       if (i==1 && getMoney()>=4 && getRank()<2) {
+         setRank(2);
+         giveMoney(-4);
+         System.out.println("Rank up succeeded. You are now rank 2.");
+         ret = true;
+       } else if (i==2 && getFame()>=5 && getRank()<2) {
+         setRank(2);
+         giveFame(-5);
+         System.out.println("Rank up succeeded. You are now rank 2.");
+         ret = true;
+       } else {
+         System.out.println("Rank up failed.");
+       }
+    }else if (opt ==3) {
+      System.out.println("1 - $10");
+      System.out.println("2 - 10 Fame");
+      i = scn.nextInt();
+      if (i==1 && getMoney()>=10 && getRank()<3) {
+        setRank(3);
+        giveMoney(-10);
+        System.out.println("Rank up succeeded. You are now rank 3.");
+        ret = true;
+      } else if (i==2 && getFame()>=10 && getRank()<3) {
+        setRank(3);
+        giveFame(-10);
+        System.out.println("Rank up succeeded. You are now rank 3.");
+        ret = true;
+      } else {
+        System.out.println("Rank up failed.");
+      }
+    }else if (opt ==4) {
+      System.out.println("1 - $18");
+      System.out.println("2 - 15 Fame");
+      i = scn.nextInt();
+      if (i==1 && getMoney()>=18 && getRank()<4) {
+        setRank(4);
+        giveMoney(-18);
+        System.out.println("Rank up succeeded. You are now rank 4.");
+        ret = true;
+      } else if (i==2 && getFame()>=15 && getRank()<4) {
+        setRank(4);
+        giveFame(-15);
+        System.out.println("Rank up succeeded. You are now rank 4.");
+        ret = true;
+      } else {
+        System.out.println("Rank up failed.");
+      }
+    } else if (opt ==5) {
+      System.out.println("1 - $28");
+      System.out.println("2 - 20 Fame");
+      i = scn.nextInt();
+      if (i==1 && getMoney()>=28 && getRank()<5) {
+        setRank(5);
+        giveMoney(-28);
+        System.out.println("Rank up succeeded. You are now rank 5.");
+        ret = true;
+      } else if (i==2 && getFame()>=20 && getRank()<5) {
+        setRank(5);
+        giveFame(-20);
+        System.out.println("Rank up succeeded. You are now rank 5.");
+        ret = true;
+      } else {
+        System.out.println("Rank up failed.");
+      }
+    } else if (opt ==6) {
+      System.out.println("1 - $40");
+      System.out.println("2 - 25 Fame");
+      i = scn.nextInt();
+      if (i==1 && getMoney()>=40 && getRank()<6) {
+        setRank(6);
+        giveMoney(-40);
+        System.out.println("Rank up succeeded. You are now rank 6.");
+        ret = true;
+      } else if (i==2 && getFame()>=25 && getRank()<6) {
+        setRank(6);
+        giveFame(-25);
+        System.out.println("Rank up succeeded. You are now rank 6.");
+        ret = true;
+      } else {
+        System.out.println("Rank up failed.");
+      }
+    } else {
+      System.out.println("Enter a number 1 through 6.");
+    }
+    return ret;
+  }//end upgrade
 
 
 }
