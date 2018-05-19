@@ -26,8 +26,10 @@ public class Deadwood {
       //count num on card players
       for (Player player : players)
         if (player.getPlayerLoc().getTitle().equals(room.getTitle()) && player.getWorkStatus()) {
-          if (player.getRole().isOnCard())
+          if (player.getRole().isOnCard()) {
             numOnCard++;
+            System.out.println("------- " + numOnCard);
+          }
           else
             numOffCard++;
         }
@@ -36,18 +38,26 @@ public class Deadwood {
       Player[] offCardPlayers = new Player[numOffCard];
 
       int i=0;
-      int j=0;
-      while (i<numOnCard && j<numOffCard) {
+      while (i<numOnCard) {
         for (Player player : players)
           if (player.getPlayerLoc().getTitle().equals(room.getTitle()) && player.getWorkStatus()) {
             if (player.getRole().isOnCard()) {
-              onCardPlayers[i++] = player;
-              //System.out.println(Arrays.toString(onCardPlayers));
+              onCardPlayers[i] = player;
+              i++;
+              System.out.println(Arrays.toString(onCardPlayers));
             }
-              else {
-              offCardPlayers[j++] = player;
-            }
+          }
+      }
 
+      int j=0;
+      while (j<numOffCard) {
+        for (Player player : players)
+          if (player.getPlayerLoc().getTitle().equals(room.getTitle()) && player.getWorkStatus()) {
+            if (!player.getRole().isOnCard()) {
+              offCardPlayers[j] = player;
+              j++;
+              System.out.println(Arrays.toString(onCardPlayers));
+            }
           }
       }
 
@@ -66,7 +76,10 @@ public class Deadwood {
 			while (k < rolls.length) {
 				for(Role role : onCard) {
 					for(Player currentPlay : onCardPlayers) {
+            System.out.println("--------Checking player" + currentPlay.getPlayerID());
 						if(currentPlay.getRole().equals(role)) {
+              System.out.println("--------player" + currentPlay.getPlayerID() + "matched role");
+
 							currentPlay.giveMoney(rolls[k]);
 							++k;
 						}
