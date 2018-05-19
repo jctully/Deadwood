@@ -138,30 +138,33 @@ public class Deadwood {
         System.out.println("Player " + (player.getPlayerID()+1) + " in " +player.getPlayerLoc().getTitle());
       }
     }else if (i == 3) {//move
-      if (!currentPlayer.hasMovedThisTurn()) {
-        System.out.println("\nInput the number pertaining to the room you would like to move to.");
-        String[] options = currentPlayer.getPlayerLoc().getAdjacentRooms();
-        for (int a=1; a<=options.length; a++) {
-          System.out.println(a+ " - " + options[a-1]);
-        }
+      if (!currentPlayer.getWorkStatus()) {
 
-        int opt = 0;
-        try{
-          opt = scn.nextInt();
-        }
-        catch(InputMismatchException exception){
-          System.out.println("You did not enter a number, returning to menu");
-          break;
-        }
 
-        currentPlayer.move(board.findRoom(options[opt-1]));
-        System.out.println("\nMoved to " + currentPlayer.getPlayerLoc().getTitle());
-        System.out.println("----------\n");
-      }
-      else{//already moved
-        System.out.println("You have already moved this turn\n");
-      }
+        if (!currentPlayer.hasMovedThisTurn()) {
+          System.out.println("\nInput the number pertaining to the room you would like to move to.");
+          String[] options = currentPlayer.getPlayerLoc().getAdjacentRooms();
+          for (int a=1; a<=options.length; a++) {
+            System.out.println(a+ " - " + options[a-1]);
+          }
 
+          int opt = 0;
+          try{
+            opt = scn.nextInt();
+          }
+          catch(InputMismatchException exception){
+            System.out.println("You did not enter a number, returning to menu");
+            break;
+          }
+
+          currentPlayer.move(board.findRoom(options[opt-1]));
+          System.out.println("\nMoved to " + currentPlayer.getPlayerLoc().getTitle());
+          System.out.println("----------\n");
+        }
+        else{//already moved
+          System.out.println("You have already moved this turn\n");
+        }
+      }else{System.out.println("You can not move while you are working.");}
 
     }else if (i == 4) {//take role
       if (currentPlayer.getPlayerLoc().isWrapped()) {
@@ -227,21 +230,22 @@ public class Deadwood {
         RNG rng = new RNG();
         int roll = rng.getRandomNum(1, 6);
         System.out.println("You rolled a " + roll + ".");
+
+        int shotsLeft = currentPlayer.getPlayerLoc().getShots();
+
         if ((roll+currentPlayer.getRehearseBonus()) >= currentPlayer.getPlayerLoc().getCard().getBudget()) {//succeed
           if (currentPlayer.getRole().isOnCard()) {//on card
-            int shotsLeft = currentPlayer.getPlayerLoc().completeShot();
+            shotsLeft = currentPlayer.getPlayerLoc().completeShot();
             currentPlayer.giveFame(2);
             System.out.println("Your act attempt succeeded. You get 2 fame.");
             System.out.println("Fame Points: " + currentPlayer.getFame());
-            currentPlayerNum = nextTurn(players, currentPlayerNum);
           } else {//off card
-            int shotsLeft = currentPlayer.getPlayerLoc().completeShot();
+            shotsLeft = currentPlayer.getPlayerLoc().completeShot();
             currentPlayer.giveMoney(1);
             currentPlayer.giveFame(1);
             System.out.println("Your act attempt succeeded. You get 1 Dollar & 1 fame.");
             System.out.println("Money: " + currentPlayer.getMoney());
             System.out.println("Fame Points: " + currentPlayer.getFame());
-            currentPlayerNum = nextTurn(players, currentPlayerNum);
 
           }
         } else {//fail
@@ -249,15 +253,23 @@ public class Deadwood {
             currentPlayer.giveMoney(1);
             System.out.println("Your act attempt failed. You get 1 Dollar.");
             System.out.println("Money: " + currentPlayer.getMoney());
-            currentPlayerNum = nextTurn(players, currentPlayerNum);
           } else {//on card
             System.out.println("Your act attempt failed. You get no rewards.");
-            currentPlayerNum = nextTurn(players, currentPlayerNum);
           }
         }
+
+        if (shotsLeft == 0) {
+          System.out.println("Time to wrap scene");
+          wrap(currentPlayer.getPlayerLoc(), board, players);
+        }
+        currentPlayerNum = nextTurn(players, currentPlayerNum);
+
       } else {//not working
         System.out.println("You are not currently working. You must be working a role to act.");
       }
+
+
+
 
     }else if (i == 6) {//rehearse
       if (currentPlayer.getWorkStatus()){
