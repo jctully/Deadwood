@@ -65,16 +65,38 @@ public class Deadwood {
     }
   }
 
-  public static void endDay(Player[] players) {
-    //Board.clearBoard();
-    for (Player p : players) {
-      // p.move(trailer);
+  public static int endDay(Board board, Player[] players, int currentDay) {
+			if(board.getRoomsLeft() == 1) {
+				board.clearBoard();
+        board.initRooms();
+				for(Player p : players) {
+          p.move(board.findRoom("trailer"));
+          p.resetMovedThisTurn();
+        }
+        //increment day
+        currentDay++;
+        System.out.print("\nDay " + (currentDay+1));
+        if (currentDay==3) {
+          endGame(players);
+        }
+      }
+      return currentDay;
 
-    }
   }
 
-  public static void endGame() {
+  public static void endGame(Player[] players) {
     //calc score
+    System.out.println("Game is over!!! Score results: ");
+    int[] scores = 0;
+    int maxInd = 0;
+    for (int i = 0; i<players.length; i++) {
+      scores[i] = players[i].getMoney() + players[i].getFame() + 5*players[i].getRank();
+      if (scores[i] > scores[maxInd])
+        maxInd = i;
+      System.out.println("Player " + (players[i].getPlayerID()+1) + " score: " + scores[i]);
+    }
+    System.out.println("Winner is player " + (players[maxInd].getPlayerID()+1) + ". Congratulations!");
+    System.exit(1);
   }
 
   public static void main(String[] args) {
