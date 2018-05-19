@@ -28,7 +28,7 @@ public class Deadwood {
         if (player.getPlayerLoc().getTitle().equals(room.getTitle()) && player.getWorkStatus()) {
           if (player.getRole().isOnCard()) {
             numOnCard++;
-            System.out.println("------- " + numOnCard);
+            //System.out.println("------- " + numOnCard);
           }
           else
             numOffCard++;
@@ -44,7 +44,7 @@ public class Deadwood {
             if (player.getRole().isOnCard()) {
               onCardPlayers[i] = player;
               i++;
-              System.out.println(Arrays.toString(onCardPlayers));
+              //System.out.println(Arrays.toString(onCardPlayers));
             }
           }
       }
@@ -56,7 +56,7 @@ public class Deadwood {
             if (!player.getRole().isOnCard()) {
               offCardPlayers[j] = player;
               j++;
-              System.out.println(Arrays.toString(onCardPlayers));
+              //System.out.println(Arrays.toString(onCardPlayers));
             }
           }
       }
@@ -76,9 +76,9 @@ public class Deadwood {
 			while (k < rolls.length) {
 				for(Role role : onCard) {
 					for(Player currentPlay : onCardPlayers) {
-            System.out.println("--------Checking player" + currentPlay.getPlayerID());
+            //System.out.println("--------Checking player" + currentPlay.getPlayerID());
 						if(currentPlay.getRole().equals(role)) {
-              System.out.println("--------player" + currentPlay.getPlayerID() + "matched role");
+              //System.out.println("--------player" + currentPlay.getPlayerID() + "matched role");
 
 							currentPlay.giveMoney(rolls[k]);
 							++k;
