@@ -35,24 +35,45 @@ public class Deadwood {
       Player[] onCardPlayers = new Player[numOnCard];
       Player[] offCardPlayers = new Player[numOffCard];
 
+      int i=0;
+      int j=0;
+      while (i<numOnCard && j<numOffCard) {
+        for (Player player : players)
+          if (player.getPlayerLoc().getTitle().equals(room.getTitle()) && player.getWorkStatus()) {
+            if (player.getRole().isOnCard()) {
+              onCardPlayers[i++] = player;
+              //System.out.println(Arrays.toString(onCardPlayers));
+            }
+              else {
+              offCardPlayers[j++] = player;
+            }
+
+          }
+      }
+
       //get dice rolls
       int budget = room.getCard().getBudget();
       RNG rng = new RNG();
       int[] rolls = rng.getDiceRolls(budget);
-
+      rng.reverse(rolls);
       Role[] onCard = room.getCard().getRoles();
+      rng.reverse(onCard);
       Role[] offCard = room.getRoles();
 
       //check if on or off card, give bonus accordingly, reset rehearse bonus
-      int i = 0;
-      while (i < budget)
-        for (Role r : onCard) {
-          for (Player p : onCardPlayers)
-            if (p.getRole().getTitle().equals(r.getTitle()))
-              p.giveMoney(rolls[i++]);
+      int k = 0;
 
-          i++;
-        }
+			while (k < rolls.length) {
+				for(Role role : onCard) {
+					for(Player currentPlay : onCardPlayers) {
+						if(currentPlay.getRole().equals(role)) {
+							currentPlay.giveMoney(rolls[k]);
+							++k;
+						}
+					}
+				}
+			}
+
       //give off card
       for(Player p : offCardPlayers)
         p.giveMoney(p.getRole().getRank());
@@ -87,7 +108,7 @@ public class Deadwood {
   public static void endGame(Player[] players) {
     //calc score
     System.out.println("Game is over!!! Score results: ");
-    int[] scores = 0;
+    int[] scores = new int[players.length];
     int maxInd = 0;
     for (int i = 0; i<players.length; i++) {
       scores[i] = players[i].getMoney() + players[i].getFame() + 5*players[i].getRank();
