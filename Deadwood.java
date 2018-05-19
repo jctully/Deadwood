@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.*;
+
 public class Deadwood {
   /* int currentDay;
   Player[] players;
@@ -20,14 +21,47 @@ public class Deadwood {
     room.wrap();
     board.wrapRoom();
     if (room.getCard().hasOnCard()) {//need to give rewards
-      int budget = room.getCard().getBudget();
-      RNG dice = new RNG();
-      int[] rolls = dice.getDiceRolls(budget);
-      for (Player player : players) {
-        if (player.playerLocation.getTitle().equals(room.getTitle())) {
-          //check if on or off card, give bonus accordingly
+      int numOnCard = 0;
+      int numOffCard = 0;
+      //count num on card players
+      for (Player player : players)
+        if (player.getPlayerLoc().getTitle().equals(room.getTitle()) && player.getWorkStatus()) {
+          if (player.getRole().isOnCard())
+            numOnCard++;
+          else
+            numOffCard++;
         }
-      }
+
+      Player[] onCardPlayers = new Player[numOnCard];
+      Player[] offCardPlayers = new Player[numOffCard];
+
+      //get dice rolls
+      int budget = room.getCard().getBudget();
+      RNG rng = new RNG();
+      int[] rolls = rng.getDiceRolls(budget);
+
+      Role[] onCard = room.getCard().getRoles();
+      Role[] offCard = room.getRoles();
+
+      //check if on or off card, give bonus accordingly, reset rehearse bonus
+      int i = 0;
+      while (i < budget)
+        for (Role r : onCard) {
+          for (Player p : onCardPlayers)
+            if (p.getRole().getTitle().equals(r.getTitle()))
+              p.giveMoney(rolls[i++]);
+
+          i++;
+        }
+      //give off card
+      for(Player p : offCardPlayers)
+        p.giveMoney(p.getRole().getRank());
+
+      for (Player player : players)
+        System.out.println("Player " + (player.getPlayerID()+1) + " has $" +player.getMoney());
+
+    } else {
+      System.out.println("No one on card. No rewards for wrapping this scene.\n");
     }
   }
 
@@ -81,8 +115,6 @@ public class Deadwood {
       System.out.println("You did not enter a number");
 
     }
-
-
 
     if (i == 1) {//player info
       System.out.println("\nID: " + (currentPlayer.getPlayerID()+1));
@@ -190,7 +222,42 @@ public class Deadwood {
       //System.out.println("The off card roles available in this room are:" + currentPlayer.getPlayerLoc().getRoles());
       //System.out.println("The on card roles available in this room are:" + currentPlayer.getPlayerLoc().getCard().getRoles());
       //System.out.println("The off card roles available in this room are:" + player.getPlayerLoc.getRoles());
-    }else if (i == 5) {
+    }else if (i == 5) {//act
+      if (currentPlayer.getWorkStatus()) {
+        RNG rng = new RNG();
+        int roll = rng.getRandomNum(1, 6);
+        System.out.println("You rolled a " + roll + ".");
+        if ((roll+currentPlayer.getRehearseBonus()) >= currentPlayer.getPlayerLoc().getCard().getBudget()) {//succeed
+          if (currentPlayer.getRole().isOnCard()) {//on card
+            int shotsLeft = currentPlayer.getPlayerLoc().completeShot();
+            currentPlayer.giveFame(2);
+            System.out.println("Your act attempt succeeded. You get 2 fame.");
+            System.out.println("Fame Points: " + currentPlayer.getFame());
+            currentPlayerNum = nextTurn(players, currentPlayerNum);
+          } else {//off card
+            int shotsLeft = currentPlayer.getPlayerLoc().completeShot();
+            currentPlayer.giveMoney(1);
+            currentPlayer.giveFame(1);
+            System.out.println("Your act attempt succeeded. You get 1 Dollar & 1 fame.");
+            System.out.println("Money: " + currentPlayer.getMoney());
+            System.out.println("Fame Points: " + currentPlayer.getFame());
+            currentPlayerNum = nextTurn(players, currentPlayerNum);
+
+          }
+        } else {//fail
+          if (!currentPlayer.getRole().isOnCard()) {//off card
+            currentPlayer.giveMoney(1);
+            System.out.println("Your act attempt failed. You get 1 Dollar.");
+            System.out.println("Money: " + currentPlayer.getMoney());
+            currentPlayerNum = nextTurn(players, currentPlayerNum);
+          } else {//on card
+            System.out.println("Your act attempt failed. You get no rewards.");
+            currentPlayerNum = nextTurn(players, currentPlayerNum);
+          }
+        }
+      } else {//not working
+        System.out.println("You are not currently working. You must be working a role to act.");
+      }
 
     }else if (i == 6) {//rehearse
       if (currentPlayer.getWorkStatus()){
@@ -207,8 +274,10 @@ public class Deadwood {
         int playerCash = currentPlayer.getMoney();
         int playerFame = currentPlayer.getFame();
 
-        System.out.println("\nUpgrade Options:");
+        System.out.println("Your Money: " + currentPlayer.getMoney());
+        System.out.println("Fame Points: " + currentPlayer.getFame());
 
+        System.out.println("\nUpgrade Options:");
         System.out.println("Rank 2 -  4$ or  5 fame");
         System.out.println("Rank 3 - 10$ or 10 fame");
         System.out.println("Rank 4 - 18$ or 15 fame");
@@ -225,17 +294,8 @@ public class Deadwood {
           System.out.println("You did not enter a number, returning to menu");
         }
 
-        if (opt ==2) {
-
-        }else if (opt ==3) {
-
-        }else if (opt ==4) {
-
-        }else if (opt ==5) {
-
-        }else if (opt ==6) {
-
-        }
+        while (currentPlayer.upgrade(opt) == false) {}
+        currentPlayerNum = nextTurn(players, currentPlayerNum);
 
       }else{
         System.out.println("You must be in the office to be able to upgrade");
